@@ -1,43 +1,27 @@
-Name:		texlive-autobreak
-Version:	43337
-Release:	2
+%global tl_name autobreak
+%global tl_revision 77682
+
+Name:		texlive-%{tl_name}
+Epoch:		1
+Version:	0.3
+Release:	%{tl_revision}.1
 Summary:	Simple line breaking of long formulae
 Group:		Publishing
 URL:		https://www.ctan.org/tex-archive/macros/latex/contrib/autobreak
 License:	lppl1.3
-Source0:	http://mirrors.ctan.org/systems/texlive/tlnet/archive/autobreak.r%{version}.tar.xz
-Source1:	http://mirrors.ctan.org/systems/texlive/tlnet/archive/autobreak.doc.r%{version}.tar.xz
-Source2:	http://mirrors.ctan.org/systems/texlive/tlnet/archive/autobreak.source.r%{version}.tar.xz
+Source0:	https://mirrors.ctan.org/systems/texlive/tlnet/archive/autobreak.r%{tl_revision}.tar.xz
+Source1:	https://mirrors.ctan.org/systems/texlive/tlnet/archive/autobreak.doc.r%{tl_revision}.tar.xz
+Source2:	https://mirrors.ctan.org/systems/texlive/tlnet/archive/autobreak.source.r%{tl_revision}.tar.xz
 BuildArch:	noarch
+BuildSystem:	texlive
 BuildRequires:	texlive-tlpkg
-Requires(pre):	texlive-tlpkg
-Requires(post):	texlive-kpathsea
+%texlive_base_requires
+Provides:	texlive(%{tl_name}) = %{tl_revision}
 
 %description
-This package implements a simple mechanism of line/page
-breaking within the align environment of the amsmath package;
-new line characters are considered as possible candidates for
-the breaks and the package tries to put breaks at adequate
-places. It is suitable for computer-generated long formulae
-with many terms.
+This package implements a simple mechanism of line/page breaking within
+the align environment of the amsmath package; new line characters are
+considered as possible candidates for the breaks and the package tries
+to put breaks at adequate places. It is suitable for computer-generated
+long formulae with many terms.
 
-%prep
-%setup -c -a1 -a2
-%autopatch -p1
-
-%build
-
-%install
-rm -rf tlpkg
-mkdir -p %{buildroot}%{_texmfdistdir}
-cp -a * %{buildroot}%{_texmfdistdir}
-
-%files
-%doc %{_texmfdistdir}/source/latex/autobreak
-%{_texmfdistdir}/tex/latex/autobreak
-%doc %{_texmfdistdir}/doc/latex/autobreak
-
-%post -p %{_sbindir}/texlive.post
-
-%postun
-[ "$1" -eq 0 ] && %{_sbindir}/texlive.post
